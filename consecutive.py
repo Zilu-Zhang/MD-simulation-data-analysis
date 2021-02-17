@@ -13,6 +13,9 @@ for filename in os.listdir('./'):
         RMSD_1 = np.zeros(n_frames)
         RMSD_2 = np.zeros(n_frames)
         AVERAGE = np.zeros(n_frames)
+        mean = np.zeros(n_frames)
+        sd = np.zeros(n_frames)
+
 
         traj_1 = md.load(filename, atom_indices = np.arange(0,48))
         traj_2 = md.load(filename, atom_indices = np.arange(48,96))
@@ -33,11 +36,11 @@ for filename in os.listdir('./'):
             RMSD_2[i] = md.rmsd(frame_residue2_tag, frame_residue2_ref)
             AVERAGE[i] = (RMSD_1[i] + RMSD_2[i])/2
 
-        mean = statistics.mean(AVERAGE)
-        sd = statistics.stdev(AVERAGE)
+        mean[0] = statistics.mean(AVERAGE)
+        sd[0] = statistics.stdev(AVERAGE)
         df = pd.DataFrame({'RMSD_1': RMSD_1, 'RMSD_2': RMSD_2, 'AVERAGE': AVERAGE, 'Mean': mean, 'SD': sd})
 
-        if not os.path.isfile('convergence_results.xlsx'):
+        if not os.path.isfile('consecutive_results.xlsx'):
             df.to_excel('consecutive_results.xlsx', '%s' % excipient_name, index = False)
 
         else:
