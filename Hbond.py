@@ -6,12 +6,12 @@ import pandas as pd
 import openpyxl as pxl
 
 def label(hbond):
-            r1 = traj.topology.atom(hbond[0])
-            r2 = traj.topology.atom(hbond[2])
-            n = 0
-            if ('ZPE' in str(r1)) is not ('ZPE' in str(r2)):
-                n = 1
-			return n
+	r1 = traj.topology.atom(hbond[0])
+	r2 = traj.topology.atom(hbond[2])
+	n = 0
+	if ('ZPE' in str(r1)) is not ('ZPE' in str(r2)):
+		n = 1
+	return n
 		
 n_frames = 200
 for filename in os.listdir('./'):
