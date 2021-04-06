@@ -7,3 +7,4 @@ Several ways of calculating RMSD:
 4. Stable, where an arbitrary frame is the reference, assuming the one is in the middle region of the simulation period and could be a stable conformation. 
 
 Hbonds
+RDkit
