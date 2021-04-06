@@ -1,3 +1,4 @@
+### This will generate a Hbonds.xlsx file containing information about total Hbonds, interactive Hbonds and their ratios of each excipient
 import os
 import os.path
 import mdtraj as md
