@@ -1,23 +1,35 @@
-import os
-import os.path
 import mdtraj as md
-import numpy as np
 import pandas as pd
 import openpyxl as pxl
-import statistics
+import os
+import os.path
 
-n_frames = 200
-for filename in os.listdir('./'):
-    if filename.endswith('.pdb'):
-        excipient_name = filename[17:-4]
-        total_Hbonds = np.zeros(n_frames)
-        interactive_Hbonds = np.zeros(n_frames)
-        ratio = np.zeros(n_frames)
+filename = 'openmm_sorafenib_ursodiol.pdb'
+excipient_name = filename[17:-4]
+lst = []
+n_frame = 200
+traj = md.load(filename)
+surface = md.shrake_rupley(traj, mode = 'residue')
+top = traj.topology
+n_residue = 16
 
-        for i in range(n_frames):
-            traj = md.load_frame(filename, i)
-            surface = md.shrake_rupley(traj, mode = 'residue')
-            number = 0
-            for hbond in hbonds:
-                n = label(hbond)
-                number += n
+for i in range(n_frame):
+    area = {}
+    for j in range(n_residue):
+        residues = top.residue(j)
+        area[residues] = surface[i][j]
+    lst.append(area)
+
+df = pd.DataFrame(lst)
+df.loc['total'] = df.sum()
+
+if not os.path.isfile('sasa.xlsx'):
+    df.to_excel('sasa.xlsx', '%s' % excipient_name, index = True)
+
+else:
+    excel_book = pxl.load_workbook('sasa.xlsx')
+    with pd.ExcelWriter('sasa.xlsx', engine = 'openpyxl') as writer:
+        writer.book = excel_book
+        writer.sheets = {worksheet.title: worksheet for worksheet in excel_book.worksheets}
+        df.to_excel(writer, '%s' % excipient_name, index = True)
+        writer.save()
