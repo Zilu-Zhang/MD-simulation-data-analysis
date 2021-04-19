@@ -16,7 +16,7 @@ for filename in os.listdir('./'):
 
         for i in range(n_frames):
             traj = md.load_frame(filename, i)
-            hbonds = md.baker_hubbard(traj)
+            surface = md.shrake_rupley(traj, mode = 'residue')
             number = 0
             for hbond in hbonds:
                 n = label(hbond)
