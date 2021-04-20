@@ -1,8 +1,8 @@
+import os
+import os.path
 import mdtraj as md
 import pandas as pd
 import openpyxl as pxl
-import os
-import os.path
 
 n_frames = 200
 for filename in os.listdir('./'):
