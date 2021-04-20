@@ -14,7 +14,7 @@ for filename in os.listdir('./'):
         top = traj.topology
         n_residue = 16
         
-        for i in range(n_frame):
+        for i in range(n_frames):
             area = {}
             for j in range(n_residue):
                 residues = top.residue(j)
