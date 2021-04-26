@@ -4,7 +4,6 @@ import os
 import os.path
 import pandas as pd
 import openpyxl as pxl
-
 from statistics import mean
 from math import sqrt
 
@@ -21,7 +20,7 @@ for filename in os.listdir('./'):
         traj = md.load(filename)
         top = traj.topology
         ori = 0
-        total = np.zeros(3200)
+        total = np.zeros(16 * n_frames)
         
         for i in range(n_frames):
             start = 0
@@ -37,17 +36,17 @@ for filename in os.listdir('./'):
             position[-1][:] = mean(array[:-1][0]), mean(array[:-1][1]), mean(array[:-1][2])
             
             distance = np.zeros(16)
-            for i in range(16):
-                distance[i] = dis(position[-1], position[i])
+            for h in range(16):
+                distance[h] = dis(position[-1], position[h])
             
             total[ori:ori + 16] = distance
-            ori += 17
+            ori += 16
             
-        r_range = np.array([0.0, 2.5])
+        r_range = np.array([0, 5])
         bin_width = 0.005
         n_bins = int((r_range[1] - r_range[0]) / bin_width)
         g_r, edges = np.histogram(total, range=r_range, bins=n_bins)
-        g_r = g_r / 3200
+        g_r = g_r / (16 * n_frames)
         r = 0.5 * (edges[1:] + edges[:-1])
 
         df = pd.DataFrame({'r': r, 'g_r': g_r}
@@ -62,4 +61,3 @@ for filename in os.listdir('./'):
                 writer.sheets = {worksheet.title: worksheet for worksheet in excel_book.worksheets}
                 df.to_excel(writer, '%s' % excipient_name, index = True)
                 writer.save()
-          
