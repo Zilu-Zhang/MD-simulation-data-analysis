@@ -49,7 +49,7 @@ for filename in os.listdir('./'):
         g_r = g_r / (16 * n_frames)
         r = 0.5 * (edges[1:] + edges[:-1])
 
-        df = pd.DataFrame({'r': r, 'g_r': g_r}
+        df = pd.DataFrame({'r': r, 'g_r': g_r})
         
         if not os.path.isfile('rdf.xlsx'):
             df.to_excel('rdf.xlsx', '%s' % excipient_name, index = True)
