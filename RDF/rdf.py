@@ -43,11 +43,11 @@ for filename in os.listdir('./'):
             total[ori:ori + 16] = distance
             ori += 17
             
-            r_range = np.array([0.0, 2.5])
-            bin_width = 0.005
-            n_bins = int((r_range[1] - r_range[0]) / bin_width)
-            g_r, edges = np.histogram(total, range=r_range, bins=n_bins)
-            g_r = g_r / 3200
-            r = 0.5 * (edges[1:] + edges[:-1])
+        r_range = np.array([0.0, 2.5])
+        bin_width = 0.005
+        n_bins = int((r_range[1] - r_range[0]) / bin_width)
+        g_r, edges = np.histogram(total, range=r_range, bins=n_bins)
+        g_r = g_r / 3200
+        r = 0.5 * (edges[1:] + edges[:-1])
 
           
