@@ -50,4 +50,16 @@ for filename in os.listdir('./'):
         g_r = g_r / 3200
         r = 0.5 * (edges[1:] + edges[:-1])
 
+        df = pd.DataFrame({'r': r, 'g_r': g_r}
+        
+        if not os.path.isfile('rdf.xlsx'):
+            df.to_excel('rdf.xlsx', '%s' % excipient_name, index = True)
+        
+        else:
+            excel_book = pxl.load_workbook('rdf.xlsx')
+            with pd.ExcelWriter('rdf.xlsx', engine = 'openpyxl') as writer:
+                writer.book = excel_book
+                writer.sheets = {worksheet.title: worksheet for worksheet in excel_book.worksheets}
+                df.to_excel(writer, '%s' % excipient_name, index = True)
+                writer.save()
           
