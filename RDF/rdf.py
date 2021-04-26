@@ -33,7 +33,7 @@ for filename in os.listdir('./'):
                 y = mean(traj.xyz[i, start:start + length - 1, 1])
                 z = mean(traj.xyz[i, start:start + length - 1, 2])
                 position[j][:] = x, y, z
-            position[-1][:] = mean(array[:-1][0]), mean(array[:-1][1]), mean(array[:-1][2])
+            position[-1][:] = mean(position[:-1][0]), mean(position[:-1][1]), mean(position[:-1][2])
             
             distance = np.zeros(16)
             for h in range(16):
