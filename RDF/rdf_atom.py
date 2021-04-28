@@ -29,10 +29,12 @@ for filename in os.listdir('./'):
         
         for i in range(n_frames):
             position = np.zeros((total_length + 1, 3))
+            
             a = traj.xyz[i, :total_length, 0]
             b = traj.xyz[i, :total_length, 1]
             c = traj.xyz[i, :total_length, 2]
             position[:total_length][:] = a, b, c
+            
             x = mean(traj.xyz[i, :total_length, 0])
             y = mean(traj.xyz[i, :total_length, 1])
             z = mean(traj.xyz[i, :total_length, 2])
