@@ -20,43 +20,46 @@ for filename in os.listdir('./'):
         traj = md.load(filename)
         top = traj.topology
         ori = 0
-        total = np.zeros(16 * n_frames)
+        res_d = top.residue(0)
+        res_e = top.residue(12)
+        d_length = res_d.n_atoms
+        e_length = res_e.n_atoms
+        total_length = d_length * 12 + e_length * 4
+        total = np.zeros(total_length * n_frames)
         
         for i in range(n_frames):
-            start = 0
-            position = np.zeros((17,3))
-            for j in range(16):
-                res = top.residue(j)
-                length = res.n_atoms
-                start += length
-                x = mean(traj.xyz[i, start:start + length - 1, 0])
-                y = mean(traj.xyz[i, start:start + length - 1, 1])
-                z = mean(traj.xyz[i, start:start + length - 1, 2])
-                position[j][:] = x, y, z
-            position[-1][:] = mean(position[:-1][0]), mean(position[:-1][1]), mean(position[:-1][2])
+            position = np.zeros((total_length + 1, 3))
+            a = traj.xyz[i, :total_length - 1, 0]
+            b = traj.xyz[i, :total_length - 1, 1]
+            c = traj.xyz[i, :total_length - 1, 2]
+            position[:total_length][:] = a, b, c
+            x = mean(traj.xyz[i, :total_length - 1, 0])
+            y = mean(traj.xyz[i, :total_length - 1, 1])
+            z = mean(traj.xyz[i, :total_length - 1, 2])
+            position[-1][:] = x, y, z
             
-            distance = np.zeros(16)
-            for h in range(16):
-                distance[h] = dis(position[-1], position[h])
+            distance = np.zeros(total_length)
+            for j in range(total_length):
+                distance[j] = dis(position[-1], position[j])
             
-            total[ori:ori + 16] = distance
-            ori += 16
+            total[ori:ori + total_length] = distance
+            ori += total_length
             
         r_range = np.array([0, 5])
         bin_width = 0.005
         n_bins = int((r_range[1] - r_range[0]) / bin_width)
         g_r, edges = np.histogram(total, range=r_range, bins=n_bins)
-        g_r = g_r / (16 * n_frames)
+        g_r = g_r / (total_length * n_frames)
         r = 0.5 * (edges[1:] + edges[:-1])
 
         df = pd.DataFrame({'r': r, 'g_r': g_r})
         
-        if not os.path.isfile('rdf.xlsx'):
-            df.to_excel('rdf.xlsx', '%s' % excipient_name, index = True)
+        if not os.path.isfile('rdf_atom.xlsx'):
+            df.to_excel('rdf_atom.xlsx', '%s' % excipient_name, index = True)
         
         else:
-            excel_book = pxl.load_workbook('rdf.xlsx')
-            with pd.ExcelWriter('rdf.xlsx', engine = 'openpyxl') as writer:
+            excel_book = pxl.load_workbook('rdf_atom.xlsx')
+            with pd.ExcelWriter('rdf_atom.xlsx', engine = 'openpyxl') as writer:
                 writer.book = excel_book
                 writer.sheets = {worksheet.title: worksheet for worksheet in excel_book.worksheets}
                 df.to_excel(writer, '%s' % excipient_name, index = True)
