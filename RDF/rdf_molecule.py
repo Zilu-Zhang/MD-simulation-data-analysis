@@ -29,9 +29,9 @@ for filename in os.listdir('./'):
                 res = top.residue(j)
                 length = res.n_atoms
                 start += length
-                x = mean(traj.xyz[i, start:start + length - 1, 0])
-                y = mean(traj.xyz[i, start:start + length - 1, 1])
-                z = mean(traj.xyz[i, start:start + length - 1, 2])
+                x = mean(traj.xyz[i, start:start + length, 0])
+                y = mean(traj.xyz[i, start:start + length, 1])
+                z = mean(traj.xyz[i, start:start + length, 2])
                 position[j][:] = x, y, z
             position[-1][:] = mean(position[:-1][0]), mean(position[:-1][1]), mean(position[:-1][2])
             
