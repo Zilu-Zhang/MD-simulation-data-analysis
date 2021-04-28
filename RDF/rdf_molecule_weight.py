@@ -14,6 +14,15 @@ def dis(ref, tag):
     return sqrt(x**2 + y**2 + z**2)
 
 n_frames = 200
+mass = {
+    'C': 12,
+    'H': 1,
+    'O': 16,
+    'N': 14,
+    'S': 32,
+    'F': 19,
+    'Cl': 35.45
+}
 for filename in os.listdir('./'):
     if filename.endswith('.pdb'):
         excipient_name = filename[17:-4]
@@ -28,6 +37,7 @@ for filename in os.listdir('./'):
             for j in range(16):
                 res = top.residue(j)
                 length = res.n_atoms
+                # name = res.atom(number).name
                 start += length
                 x = mean(traj.xyz[i, start:start + length, 0])
                 y = mean(traj.xyz[i, start:start + length, 1])
