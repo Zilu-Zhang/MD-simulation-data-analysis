@@ -31,18 +31,43 @@ for filename in os.listdir('./'):
         ori = 0
         total = np.zeros(16 * n_frames)
         
+        length_drug = top.residue(0).n_atoms
+        length_excp = top.residue(12).n_atoms
+        
+        element_drug = []
+        element_excp = []
+        
+        for i in range(length_drug):
+            element_mass = str(top.residue(0).atom(i).name)
+            element_drug.append(mass[element_mass])
+        mass_drug = sum(element_drug)
+        
+        for i in range(length_excp):
+            element_mass_ex = str(top.residue(12).atom(i).name)
+            element_excp.append(mass[element_mass_ex])
+        mass_excp = sum(element_excp)
+        
+        mass_part = mass_drug + mass_excp
+        
         for i in range(n_frames):
             start = 0
             position = np.zeros((17,3))
             for j in range(16):
                 res = top.residue(j)
                 length = res.n_atoms
-                # name = res.atom(number).name
-                start += length
-                x = mean(traj.xyz[i, start:start + length, 0])
-                y = mean(traj.xyz[i, start:start + length, 1])
-                z = mean(traj.xyz[i, start:start + length, 2])
+                
+                if j <= 11:
+                    x = sum(list(traj.xyz[i, start:start + length, 0])) * element_drug) / mass_drug
+                    y = sum(list(traj.xyz[i, start:start + length, 1])) * element_drug) / mass_drug
+                    z = sum(list(traj.xyz[i, start:start + length, 2])) * element_drug) / mass_drug
+                else:
+                    x = sum(list(traj.xyz[i, start:start + length, 0])) * element_excp) / mass_excp
+                    y = sum(list(traj.xyz[i, start:start + length, 1])) * element_excp) / mass_excp
+                    z = sum(list(traj.xyz[i, start:start + length, 2])) * element_excp) / mass_excp
+                
                 position[j][:] = x, y, z
+                start += length
+
             position[-1][:] = mean(position[:-1][0]), mean(position[:-1][1]), mean(position[:-1][2])
             
             distance = np.zeros(16)
