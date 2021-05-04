@@ -86,12 +86,12 @@ for filename in os.listdir('./'):
 
         df = pd.DataFrame({'r': r, 'g_r': g_r})
         
-        if not os.path.isfile('rdf_molecule.xlsx'):
-            df.to_excel('rdf_molecule.xlsx', '%s' % excipient_name, index = True)
+        if not os.path.isfile('rdf_molecule_mass.xlsx'):
+            df.to_excel('rdf_molecule_mass.xlsx', '%s' % excipient_name, index = True)
         
         else:
-            excel_book = pxl.load_workbook('rdf_molecule.xlsx')
-            with pd.ExcelWriter('rdf_molecule.xlsx', engine = 'openpyxl') as writer:
+            excel_book = pxl.load_workbook('rdf_molecule_mass.xlsx')
+            with pd.ExcelWriter('rdf_molecule_mass.xlsx', engine = 'openpyxl') as writer:
                 writer.book = excel_book
                 writer.sheets = {worksheet.title: worksheet for worksheet in excel_book.worksheets}
                 df.to_excel(writer, '%s' % excipient_name, index = True)
