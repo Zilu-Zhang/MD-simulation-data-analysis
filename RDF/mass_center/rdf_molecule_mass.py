@@ -38,12 +38,12 @@ for filename in os.listdir('./'):
         element_excp = []
         
         for i in range(length_drug):
-            element_mass = str(top.residue(0).atom(i).name)
+            element_mass = str(top.residue(0).atom(i).element.symbol)
             element_drug.append(mass[element_mass])
         mass_drug = sum(element_drug)
         
         for i in range(length_excp):
-            element_mass_ex = str(top.residue(12).atom(i).name)
+            element_mass_ex = str(top.residue(12).atom(i).element.symbol)
             element_excp.append(mass[element_mass_ex])
         mass_excp = sum(element_excp)
         
