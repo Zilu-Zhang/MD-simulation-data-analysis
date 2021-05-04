@@ -46,7 +46,7 @@ for filename in os.listdir('./'):
         bin_width = 0.005
         n_bins = int((r_range[1] - r_range[0]) / bin_width)
         g_r, edges = np.histogram(total, range=r_range, bins=n_bins)
-        g_r = g_r / (16 * n_frames)
+        g_r = g_r / (12 * n_frames)
         r = 0.5 * (edges[1:] + edges[:-1])
 
         df = pd.DataFrame({'r': r, 'g_r': g_r})
