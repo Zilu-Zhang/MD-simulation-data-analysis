@@ -57,13 +57,13 @@ for filename in os.listdir('./'):
                 length = res.n_atoms
                 
                 if j <= 11:
-                    x = sum(list(traj.xyz[i, start:start + length, 0])) * element_drug) / mass_drug
-                    y = sum(list(traj.xyz[i, start:start + length, 1])) * element_drug) / mass_drug
-                    z = sum(list(traj.xyz[i, start:start + length, 2])) * element_drug) / mass_drug
+                    x = sum(list(traj.xyz[i, start:start + length, 0])) * element_drug / mass_drug
+                    y = sum(list(traj.xyz[i, start:start + length, 1])) * element_drug / mass_drug
+                    z = sum(list(traj.xyz[i, start:start + length, 2])) * element_drug / mass_drug
                 else:
-                    x = sum(list(traj.xyz[i, start:start + length, 0])) * element_excp) / mass_excp
-                    y = sum(list(traj.xyz[i, start:start + length, 1])) * element_excp) / mass_excp
-                    z = sum(list(traj.xyz[i, start:start + length, 2])) * element_excp) / mass_excp
+                    x = sum(list(traj.xyz[i, start:start + length, 0])) * element_excp / mass_excp
+                    y = sum(list(traj.xyz[i, start:start + length, 1])) * element_excp / mass_excp
+                    z = sum(list(traj.xyz[i, start:start + length, 2])) * element_excp / mass_excp
                 
                 position[j][:] = x, y, z
                 start += length
