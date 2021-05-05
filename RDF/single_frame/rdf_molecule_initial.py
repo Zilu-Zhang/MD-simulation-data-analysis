@@ -22,7 +22,7 @@ for filename in os.listdir('./'):
         ori = 0
         total = np.empty(16 * n_frames)
         
-        i = 0
+        i = 0 # changable
         start = 0
         position = np.zeros((17,3))
         for j in range(16):
