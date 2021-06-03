@@ -10,7 +10,7 @@ def label(hbond):
     r1 = traj.topology.atom(hbond[0])
     r2 = traj.topology.atom(hbond[2])
     n = 0
-    if ('ZPE' in str(r1)) is not ('ZPE' in str(r2)):
+    if str(r1)[:3] != str(r2)[:3]:
         n = 1
     return n
 
