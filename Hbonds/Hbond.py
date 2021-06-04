@@ -23,7 +23,7 @@ for filename in os.listdir('./'):
 	full = md.load(filename)
 	n_frames = len(full)
         excipient_name = filename[17:-4]
-        total_Hbonds, interactive_Hbonds, ratio = np.zeros(n_frames), np.zeros(n_frames), np.zeros(n_frames)
+        total_Hbonds, interactive_Hbonds, ratio = np.zeros(n_frames + 1), np.zeros(n_frames + 1), np.zeros(n_frames + 1)
 
         for i in range(n_frames):
             traj = full[i]
@@ -35,7 +35,10 @@ for filename in os.listdir('./'):
             total_Hbonds[i] = len(hbonds)
             interactive_Hbonds[i] = number
             ratio[i] = interactive_Hbonds[i] / total_Hbonds[i]
-
+	
+	total_Hbonds[:-1] = 
+	interactive_Hbonds = 
+	ratio
         df = pd.DataFrame({'total_Hbonds': total_Hbonds, 'interactive_Hbonds': interactive_Hbonds, 'ratio': ratio})
 		
         if not os.path.isfile('Hbonds.xlsx'):
