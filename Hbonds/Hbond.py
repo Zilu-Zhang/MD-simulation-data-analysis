@@ -9,7 +9,6 @@ import mdtraj as md
 import numpy as np
 import pandas as pd
 import openpyxl as pxl
-from statistics import mean
 
 # recognize the interactive H bonds between drug and excipient molecules
 def label(hbond):
@@ -27,8 +26,7 @@ for filename in os.listdir('./'):
 	n_frames = len(full)
 	drug_code = str(full.topology.residue(0))
         excipient_name = filename[17:-4]
-        total_Hbonds, interactive_Hbonds, drug_donor, interactive_ratio = np.zeros(n_frames + 1), np.zeros(n_frames + 1), np.zeros(n_frames + 1), np.zeros(n_frames + 1)
-	frame_index = np.zeros(n_frames + 1)
+        frame_index = total_Hbonds = interactive_Hbonds = interactive_ratio = drug_donor_Hbonds = drug_donor_ratio = np.zeros(n_frames + 1)
 	
         for i in range(n_frames):
             traj = full[i]
@@ -39,13 +37,12 @@ for filename in os.listdir('./'):
                 n, m = label(hbond)
                 number += n
 		donor += m
-		
-		
+			
             frame_index[i] = i
             total_Hbonds[i] = len(hbonds)
             interactive_Hbonds[i] = number
             interactive_ratio[i] = interactive_Hbonds[i] / total_Hbonds[i]
-            drug_donor[i] = donor
+            drug_donor_Hbonds[i] = donor
             drug_donor_ratio[i] = drug_donor[i] / interactive_Hbonds[i]
 
 
@@ -53,15 +50,15 @@ for filename in os.listdir('./'):
 	frame_index[-1] = 'summary' # row title
 	total_Hbonds[-1] = sum(total_Hbonds[:-2]) # total number of all Hbonds
 	interactive_Hbonds[-1] = sum(interactive_Hbonds[:-2]) # total number of all interactive Hbonds
-	interactive_ratio[-1] = mean(interactive_ratio[:-2]) # mean value of interactive Hbonds ratios
-	drug_donor[-1] = sum(drug_donor[:-2]) # total number of all interactive Hbonds
-	drug_donor_ratio[-1] = mean(drug_donor_ratio[:-2]) # mean value of interactive Hbonds ratios
+	interactive_ratio[-1] = interactive_Hbonds[-1] / total_Hbonds[-1] # overall interactive Hbonds ratios
+	drug_donor_Hbonds[-1] = sum(drug_donor_Hbonds[:-2]) # total number of all interactive Hbonds
+	drug_donor_ratio[-1] = drug_donor_Hbonds[-1] / interactive_Hbonds[-1] # overall drug-as-donor Hbonds ratios
 	
         df = pd.DataFrame({'frame_index': frame_index, 
 			   'total_Hbonds': total_Hbonds,
 			   'interactive_Hbonds': interactive_Hbonds, 
 			   'interactive_ratio':interactive_ratio,
-			   'drug_donor':drug_donor,
+			   'drug_donor_Hbonds':drug_donor_Hbonds,
 			   'drug_donor_ratio': drug_donor_ratio})
 		
         if not os.path.isfile('Hbonds.xlsx'):
