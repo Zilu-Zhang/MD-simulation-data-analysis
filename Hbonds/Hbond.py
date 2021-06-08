@@ -1,5 +1,7 @@
 '''
 This will generate a Hbonds.xlsx file containing information about total Hbonds, interactive Hbonds and the corresponding ratios
+
+Use either "drug_name" or "excipient_name" as the sheet name based on either "excipient-centered" or "drug-centered" simulation trajectory files
 '''
 
 # import packages
